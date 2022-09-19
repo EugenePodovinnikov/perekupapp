@@ -1,0 +1,27 @@
+DROP TABLE IF EXISTS pets;
+CREATE TABLE pets(id serial PRIMARY KEY, name VARCHAR(255), bio VARCHAR(255), age INT, owners VARCHAR(225));
+DROP TABLE IF EXISTS owners;
+CREATE TABLE owners(id serial PRIMARY KEY, name VARCHAR(255), phone_number VARCHAR(10),
+password VARCHAR(255), bio VARCHAR(255), pet_list VARCHAR(255), favorite_pets VARCHAR(255));
+INSERT INTO pets(NAME, BIO, AGE, OWNER_ID, FAVORITED_OWNERS) VALUES('Gosha', 'from Kharkov', 11, 1, 0);
+INSERT INTO pets(NAME, BIO, AGE, OWNER_ID, FAVORITED_OWNERS) VALUES('Shustrik', 'from Bavariya', 2, 2, 0);
+
+CREATE TABLE favorite_pets
+(
+    pet_id int not null,
+    CONSTRAINT fk_pet
+        FOREIGN KEY (pet_id)
+            REFERENCES pets (pet_id),
+    favorite_pets VARCHAR(255)
+);
+
+#spring.main.banner-mode=off
+#logging.level.org.springframework=ERROR
+#spring.jpa.hibernate.ddl-auto=none
+#spring.datasource.password=fujitsu141
+#spring.datasource.username=postgres
+#spring.cloud.gcp.sql.database-name=petmigrationdb
+#spring.datasource.url=jdbc:postgresql://google/cloudSqlInstance=petmigrationdb&socketFactory=com.google.cloud.sql.postgres.SocketFactory
+#spring.cloud.gcp.sql.instance-connection-name=woven-arcadia-299710:us-central1:petmigrationdb
+#spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+#spring.sql.init.mode=always
