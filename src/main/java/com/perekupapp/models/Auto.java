@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Component
@@ -40,15 +38,30 @@ public class Auto {
     private String linkToView;
 
     @JsonProperty
-    private String vin;
+    private String VIN;
 
     @JsonProperty
     private String plateNumber;
 
     @JsonProperty
-    @ElementCollection
-    private List<String> prices;
+    private String USD;
+
+    @JsonProperty
+    private String UAH;
+
+    @JsonProperty
+    private String EUR;
 
     @JsonProperty
     private String description;
+
+    @JsonProperty
+    private int year;
+
+    @JsonProperty
+    private int raceInt;
+
+//    @JsonProperty
+//    @ElementCollection
+//    private List<String> photoData;
 }
