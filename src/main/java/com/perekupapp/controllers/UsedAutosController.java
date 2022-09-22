@@ -3,29 +3,32 @@ package com.perekupapp.controllers;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.perekupapp.models.Auto;
-import com.perekupapp.models.Make;
 import com.perekupapp.models.SearchResult;
 import com.perekupapp.reporistories.UsedCarsRepository;
-import com.perekupapp.resources.Constants.PriceThreshold;
 import kong.unirest.Unirest;
 import lombok.SneakyThrows;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.function.BinaryOperator;
+import java.util.function.UnaryOperator;
 
 import static com.perekupapp.resources.Constants.ApiInfo.TOKEN;
 import static com.perekupapp.resources.Constants.Links.RIA_SEARCH_URL;
+import static com.perekupapp.resources.Constants.Texts.PERFORMING_REQUEST;
 import static java.lang.String.format;
 
 @RestController
 @RequestMapping("/api/v1/used-autos")
 public class UsedAutosController {
+
+    private static final Logger logger = LogManager.getRootLogger();
 
     @Autowired
     private UsedCarsRepository usedCarsRepository;
@@ -50,17 +53,30 @@ public class UsedAutosController {
         return mapper.readValue(response, Auto.class);
     }
 
-    public List<Auto> getAutoByPriceAndYear(PriceThreshold maxPrice, Make make, LocalDate from, LocalDate till) {
-        BiFunction<LocalDate, LocalDate, String> yearParameter = (a, b) -> format("s_yers[0]=%s&po_yers[0]=%s", a, b);
-        Function<Make, String> makeParameter = s -> format("marka_id[0]=%s", s);
-        Function<PriceThreshold, String> priceParameter = c -> format("price_ot=0&price_do=%s", c);
-        String response = Unirest.get(RIA_SEARCH_URL + TOKEN + yearParameter.apply(from, till) + makeParameter.apply(make) + priceParameter.apply(maxPrice)).asJson().getBody().toPrettyString();
-
+    @SneakyThrows
+    @GetMapping("/get-by-price-year-and-make")
+    public String getAutoByPriceAndYear(@RequestParam String maxPrice, @RequestParam  String make, @RequestParam  String yearFrom, @RequestParam String yearTill) {
+        BinaryOperator<String> yearParameter = (a, b) -> format("s_yers[0]=%s&po_yers[0]=%s", a, b);
+        UnaryOperator<String> makeParameter = s -> format("marka_id[0]=%s", s);
+        UnaryOperator<String> priceParameter = c -> format("price_ot=0&price_do=%s", c);
+        String requestUrl = RIA_SEARCH_URL + TOKEN + "&" + yearParameter.apply(yearFrom, yearTill) + "&" + makeParameter.apply(make) + "&" + priceParameter.apply(maxPrice);
+        logger.info(format(PERFORMING_REQUEST, requestUrl));
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+        return Unirest.get(requestUrl).asJson().getBody().toPrettyString();
+//        return List.of(mapper.readValue(Unirest.get(requestUrl).asJson().getBody().getObject().getString("search_result"), SearchResult.class));
     }
 
-
-
-
-
-
+    @SneakyThrows
+    @GetMapping("/get-by-price-and-year")
+    public String getAutoByPriceAndYear(@RequestParam String maxPrice, @RequestParam  String yearFrom, @RequestParam String yearTill) {
+        BinaryOperator<String> yearParameter = (a, b) -> format("s_yers[0]=%s&po_yers[0]=%s", a, b);
+        UnaryOperator<String> priceParameter = c -> format("price_ot=0&price_do=%s", c);
+        String requestUrl = RIA_SEARCH_URL + TOKEN + "&" + yearParameter.apply(yearFrom, yearTill) + "&" + priceParameter.apply(maxPrice);
+        logger.info(format(PERFORMING_REQUEST, requestUrl));
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+        return Unirest.get(requestUrl).asJson().getBody().toPrettyString();
+//        return List.of(mapper.readValue(Unirest.get(requestUrl).asJson().getBody().getObject().getString("search_result"), SearchResult.class));
+    }
 }

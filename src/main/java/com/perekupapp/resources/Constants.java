@@ -8,6 +8,7 @@ public class Constants {
 
     public class Texts {
         public static final String SKODA_AD_ID = "33263024";
+        public static final String PERFORMING_REQUEST = "Performing request to: %s";
     }
 
     public class ApiInfo {
