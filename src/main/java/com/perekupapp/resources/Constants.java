@@ -9,6 +9,18 @@ public class Constants {
     public class Texts {
         public static final String SKODA_AD_ID = "33263024";
         public static final String PERFORMING_REQUEST = "Performing request to: %s";
+        public static final String ALL_MODELS = "model_id[1]=0";
+    }
+
+    public class CarIds {
+        public static final String ALPHA_ROMEO = "2";
+        public static final String TOYOTA = "79";
+        public static final String VOLKSWAGEN = "84";
+        public static final String BMW = "9";
+    }
+
+    public class VolkswagenModelIds {
+        public static final String TIGUAN = "2692";
     }
 
     public class ApiInfo {
