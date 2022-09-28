@@ -1,11 +1,8 @@
 package com.perekupapp.reporistories;
 
-import com.perekupapp.models.Auto;
+import com.perekupapp.models.CarAdvert;
 import org.springframework.data.repository.CrudRepository;
 
-public interface UsedCarsRepository extends CrudRepository<Auto, Long> {
-
-
-
+public interface UsedCarsRepository extends CrudRepository<CarAdvert, Long> {
 
 }

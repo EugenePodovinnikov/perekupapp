@@ -10,6 +10,11 @@ public class Constants {
         public static final String SKODA_AD_ID = "33263024";
         public static final String PERFORMING_REQUEST = "Performing request to: %s";
         public static final String ALL_MODELS = "model_id[1]=0";
+        public static final String RESULT = "result";
+        public static final String SEARCH_RESULT = "search_result";
+        public static final String IDS = "ids";
+        public static final String ADVERT_CREATED = "Advert object created: %s";
+        public static final String FOUND_N_RESULTS = "Found %d results";
     }
 
     public class CarIds {
@@ -23,6 +28,10 @@ public class Constants {
         public static final String TIGUAN = "2692";
     }
 
+    public class Bmw_Models {
+        public static final String F10_528 = "32647";
+    }
+
     public class ApiInfo {
         public static final String TOKEN = "jQB90wUws74INYaGWkEG4U9E2pBAaw6JhfZlKFo5";
     }
@@ -33,6 +42,7 @@ public class Constants {
         public static final String AUTO_SEARCH = "/auto/search";
         public static final String NEW_AUTOS = "/auto/new/autos";
         public static final String AUTO_PAGE_URL = "https://developers.ria.com/auto/info?api_key=%s&auto_id=%s";
+        public static final String AUTO_RIA_BASE_URL = "https://auto.ria.com";
     }
 
     public class Parameters {

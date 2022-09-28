@@ -16,9 +16,5 @@ import org.springframework.stereotype.Component;
 public class SearchResult {
 
     @JsonProperty
-    private ObjectNode result;
-
-    @JsonProperty
     private ObjectNode ids;
-
 }
