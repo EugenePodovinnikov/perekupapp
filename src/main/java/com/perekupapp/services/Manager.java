@@ -24,5 +24,13 @@ public class Manager {
         return response;
     }
 
+    public static String mapCarMakeToId(String make) {
+        Constants.CarIds carIds = new Constants.CarIds();
+        return carIds.makeIds.get(make);
+    }
 
+    public static String mapCarModelToId(String model) {
+        Constants.ModelIds modelIds = new Constants.ModelIds();
+        return modelIds.modelIds.get(model);
+    }
 }

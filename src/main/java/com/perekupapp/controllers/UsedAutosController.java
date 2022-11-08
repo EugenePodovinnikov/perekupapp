@@ -21,6 +21,8 @@ import static com.perekupapp.resources.Constants.ApiInfo.TOKEN;
 import static com.perekupapp.resources.Constants.Links.AUTO_PAGE_URL;
 import static com.perekupapp.resources.Constants.Links.RIA_SEARCH_URL;
 import static com.perekupapp.resources.Constants.Texts.*;
+import static com.perekupapp.services.Manager.mapCarMakeToId;
+import static com.perekupapp.services.Manager.mapCarModelToId;
 import static java.lang.String.format;
 
 @RestController
@@ -61,7 +63,7 @@ public class UsedAutosController {
 
     @SneakyThrows
     @GetMapping("/get-by-price-year-and-make")
-    public List<CarAdvert> getAutoByPriceYearMakeAndModel(@RequestParam String maxPrice, @RequestParam  String make, @RequestParam  String yearFrom, @RequestParam String yearTill) {
+    public List<CarAdvert> getAutoByPriceYearMake(@RequestParam String maxPrice, @RequestParam  String make, @RequestParam  String yearFrom, @RequestParam String yearTill) {
         BinaryOperator<String> yearParameter = (a, b) -> format("s_yers[0]=%s&po_yers[0]=%s", a, b);
         UnaryOperator<String> makeParameter = s -> format("marka_id[0]=%s", s);
         UnaryOperator<String> priceParameter = c -> format("price_ot=0&price_do=%s", c);
@@ -73,14 +75,16 @@ public class UsedAutosController {
         return searchResults;
     }
 
-
-
     @SneakyThrows
     @GetMapping("/get-by-price-year-make-and-model")
     public List<CarAdvert> getAutoByPriceYearMakeAndModel(@RequestParam String maxPrice, @RequestParam  String make, String model, @RequestParam  String yearFrom, @RequestParam String yearTill) {
+
+        String makeId = mapCarMakeToId(make);
+        String modelId = mapCarModelToId(model);
+
         BinaryOperator<String> yearParameter = (a, b) -> format("s_yers[0]=%s&po_yers[0]=%s", a, b);
-        UnaryOperator<String> makeParameter = s -> format("marka_id[0]=%s", s);
-        UnaryOperator<String> modelParameter = m -> format("model_id[0]=%s", m);
+        UnaryOperator<String> makeParameter = s -> format("marka_id[0]=%s", makeId);
+        UnaryOperator<String> modelParameter = m -> format("model_id[0]=%s", modelId);
         UnaryOperator<String> priceParameter = c -> format("price_ot=0&price_do=%s", c);
         String requestUrl = RIA_SEARCH_URL + TOKEN + "&" + yearParameter.apply(yearFrom, yearTill) + "&" + makeParameter.apply(make) + "&" + modelParameter.apply(model) + "&" + priceParameter.apply(maxPrice);
         logger.info(format(PERFORMING_REQUEST, requestUrl));
@@ -89,7 +93,6 @@ public class UsedAutosController {
         searchResults = getCarAdverts(requestUrl, mapper);
         return searchResults;
     }
-
 
     @SneakyThrows
     @GetMapping("/get-by-price-and-year")

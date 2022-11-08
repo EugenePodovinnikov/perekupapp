@@ -2,14 +2,14 @@ package com.perekupapp.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRawValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.*;
-import java.util.Map;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 import static com.perekupapp.resources.Constants.Links.AUTO_RIA_BASE_URL;
 
@@ -22,7 +22,6 @@ import static com.perekupapp.resources.Constants.Links.AUTO_RIA_BASE_URL;
 public class CarAdvert {
 
     @Id
-    @JsonProperty
     @Column(name  = "id")
     private long id;
 
@@ -48,20 +47,8 @@ public class CarAdvert {
     @JsonProperty
     private String modelName;
 
-    @JsonProperty
-    private String plateNumber;
-
-    @JsonProperty
-    private String USD;
-
-    @JsonProperty
-    private String UAH;
-
-    @JsonProperty
-    private String EUR;
-
-    @JsonProperty
-    private String description;
+    @JsonProperty("USD")
+    private String priceUsd;
 
     @Override
     public String toString() {
@@ -71,8 +58,7 @@ public class CarAdvert {
                 ", locationCityName='" + locationCityName + '\'' +
                 ", markName='" + markName + '\'' +
                 ", modelName='" + modelName + '\'' +
-                ", USD='" + USD + '\'' +
-                ", description='" + description + '\'' +
+                ", priceUsd='" + priceUsd + '\'' +
                 '}';
     }
 }

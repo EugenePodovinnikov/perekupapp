@@ -1,8 +1,7 @@
 package com.perekupapp.resources;
 
-import java.util.function.BinaryOperator;
-
-import static java.lang.String.format;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Constants {
 
@@ -17,11 +16,22 @@ public class Constants {
         public static final String FOUND_N_RESULTS = "Found %d results";
     }
 
-    public class CarIds {
-        public static final String ALPHA_ROMEO = "2";
-        public static final String TOYOTA = "79";
-        public static final String VOLKSWAGEN = "84";
-        public static final String BMW = "9";
+    public static class CarIds {
+        public Map<String, String> makeIds = new HashMap<>();
+        {
+            makeIds.put("Alfa Romeo", "2");
+            makeIds.put("Toyota", "79");
+            makeIds.put("Volkswagen", "84");
+            makeIds.put("BMW", "9");
+        }
+    }
+
+    public static class ModelIds {
+        public Map<String, String> modelIds = new HashMap<>();
+        {
+            modelIds.put("Tiguan", "2692");
+            modelIds.put("F10", "32647");
+        }
     }
 
     public class VolkswagenModelIds {
