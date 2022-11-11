@@ -7,23 +7,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
 import static com.perekupapp.resources.Constants.Links.AUTO_RIA_BASE_URL;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Component
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 @Getter
 public class CarAdvert {
 
-    @Id
-    @Column(name  = "id")
-    private long id;
+    @JsonProperty
+    private AutoData autoData;
 
     @JsonProperty
     private String title;
@@ -50,15 +44,21 @@ public class CarAdvert {
     @JsonProperty("USD")
     private String priceUsd;
 
+    @JsonProperty("VIN")
+    private String vin;
+
     @Override
     public String toString() {
         return "CarAdvert{" +
-                "title='" + title + '\'' +
+                "autoData=" + autoData +
+                ", title='" + title + '\'' +
                 ", linkToView='" + linkToView + '\'' +
+                ", userId='" + userId + '\'' +
                 ", locationCityName='" + locationCityName + '\'' +
                 ", markName='" + markName + '\'' +
                 ", modelName='" + modelName + '\'' +
                 ", priceUsd='" + priceUsd + '\'' +
+                ", vin='" + vin + '\'' +
                 '}';
     }
 }

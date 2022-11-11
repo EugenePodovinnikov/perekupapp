@@ -53,6 +53,7 @@ public class Constants {
         public static final String NEW_AUTOS = "/auto/new/autos";
         public static final String AUTO_PAGE_URL = "https://developers.ria.com/auto/info?api_key=%s&auto_id=%s";
         public static final String AUTO_RIA_BASE_URL = "https://auto.ria.com";
+        public static final String PHOTOS = "https://developers.ria.com/auto/fotos/%s?api_key=" + ApiInfo.TOKEN;
     }
 
     public class Parameters {

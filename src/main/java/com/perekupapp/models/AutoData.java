@@ -1,7 +1,9 @@
 package com.perekupapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AutoData {
 
     @JsonProperty
@@ -17,8 +19,8 @@ public class AutoData {
     private String fuelName;
 
     @JsonProperty
-    private String gearBoxName;
+    private String driveName;
 
     @JsonProperty
-    private String driveName;
+    private String autoId;
 }
