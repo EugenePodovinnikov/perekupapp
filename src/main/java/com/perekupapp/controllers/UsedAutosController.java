@@ -66,14 +66,14 @@ public class UsedAutosController {
 
     @SneakyThrows
     @GetMapping("/get-by-price-year-and-make")
-    public List<CarAdvert> getAutoByPriceYearMake(@RequestParam String maxPrice, @RequestParam  String make, @RequestParam  String yearFrom, @RequestParam String yearTill) {
+    public List<CarAdvert> getAutoByPriceYearMake(@RequestParam String minPrice, @RequestParam String maxPrice, @RequestParam  String make, @RequestParam  String yearFrom, @RequestParam String yearTill) {
         String makeId = mapCarMakeToId(make);
 
         BinaryOperator<String> yearParameter = (a, b) -> format("s_yers[0]=%s&po_yers[0]=%s", a, b);
         UnaryOperator<String> makeParameter = s -> format("marka_id[0]=%s", makeId);
-        UnaryOperator<String> priceParameter = c -> format("price_ot=0&price_do=%s", c);
+        BinaryOperator<String> priceParameter = (c, d) -> format("price_ot=%s&price_do=%s", c, d);
         String requestUrl = RIA_SEARCH_URL + TOKEN + "&" + yearParameter.apply(yearFrom, yearTill) + "&" +
-                makeParameter.apply(make) + "&" + priceParameter.apply(maxPrice) + "&" +
+                makeParameter.apply(make) + "&" + priceParameter.apply(minPrice, maxPrice) + "&" +
                 COUNT_PAGE_20 + ORDER_BY_ASC;
         logger.info(format(PERFORMING_REQUEST, requestUrl));
         ObjectMapper mapper = new ObjectMapper();
@@ -84,7 +84,7 @@ public class UsedAutosController {
 
     @SneakyThrows
     @GetMapping("/get-by-price-year-make-and-model")
-    public List<CarAdvert> getAutoByPriceYearMakeAndModel(@RequestParam String maxPrice, @RequestParam  String make, String model, @RequestParam  String yearFrom, @RequestParam String yearTill) {
+    public List<CarAdvert> getAutoByPriceYearMakeAndModel(@RequestParam String minPrice,@RequestParam String maxPrice, @RequestParam  String make, String model, @RequestParam  String yearFrom, @RequestParam String yearTill) {
 
         String makeId = mapCarMakeToId(make);
         String modelId = mapCarModelToId(model);
@@ -92,10 +92,10 @@ public class UsedAutosController {
         BinaryOperator<String> yearParameter = (a, b) -> format("s_yers[0]=%s&po_yers[0]=%s", a, b);
         UnaryOperator<String> makeParameter = s -> format("marka_id[0]=%s", makeId);
         UnaryOperator<String> modelParameter = m -> format("model_id[0]=%s", modelId);
-        UnaryOperator<String> priceParameter = c -> format("price_ot=0&price_do=%s", c);
+        BinaryOperator<String> priceParameter = (c, d) -> format("price_ot=%s&price_do=%s", c, d);
         String requestUrl = RIA_SEARCH_URL + TOKEN + "&" + yearParameter.apply(yearFrom, yearTill) + "&" + makeParameter.apply(make) +
                 "&" + modelParameter.apply(model) + "&" +
-                priceParameter.apply(maxPrice) + "&" + COUNT_PAGE_20 + ORDER_BY_ASC;
+                priceParameter.apply(minPrice, maxPrice) + "&" + COUNT_PAGE_20 + ORDER_BY_ASC;
         logger.info(format(PERFORMING_REQUEST, requestUrl));
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
@@ -112,11 +112,11 @@ public class UsedAutosController {
 
     @SneakyThrows
     @GetMapping("/get-by-price-and-year")
-    public List<CarAdvert> getAutoByPriceAndYear(@RequestParam String maxPrice, @RequestParam  String yearFrom, @RequestParam String yearTill) {
+    public List<CarAdvert> getAutoByPriceAndYear(@RequestParam String minPrice, @RequestParam String maxPrice, @RequestParam  String yearFrom, @RequestParam String yearTill) {
         BinaryOperator<String> yearParameter = (a, b) -> format("s_yers[0]=%s&po_yers[0]=%s", a, b);
-        UnaryOperator<String> priceParameter = c -> format("price_ot=0&price_do=%s", c);
+        BinaryOperator<String> priceParameter = (c, d) -> format("price_ot=%s&price_do=%s", c, d);
         String requestUrl = RIA_SEARCH_URL + TOKEN + "&" + yearParameter.apply(yearFrom, yearTill) + "&" +
-                priceParameter.apply(maxPrice) + "&" + COUNT_PAGE_20;
+                priceParameter.apply(minPrice, maxPrice) + "&" + COUNT_PAGE_20;
         logger.info(format(PERFORMING_REQUEST, requestUrl));
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
@@ -126,11 +126,11 @@ public class UsedAutosController {
 
     @SneakyThrows
     @GetMapping("/get-car-ids")
-    public List<CarAdvert> getCarIds(@RequestParam String maxPrice, @RequestParam  String yearFrom, @RequestParam String yearTill) {
+    public List<CarAdvert> getCarIds(@RequestParam String minPrice, @RequestParam String maxPrice, @RequestParam  String yearFrom, @RequestParam String yearTill) {
         BinaryOperator<String> yearParameter = (a, b) -> format("s_yers[0]=%s&po_yers[0]=%s", a, b);
-        UnaryOperator<String> priceParameter = c -> format("price_ot=0&price_do=%s", c);
+        BinaryOperator<String> priceParameter = (c, d) -> format("price_ot=%s&price_do=%s", c, d);
         String requestUrl = RIA_SEARCH_URL + TOKEN + "&" + yearParameter.apply(yearFrom, yearTill) + "&" +
-                priceParameter.apply(maxPrice) + "&countpage=100";
+                priceParameter.apply(minPrice, maxPrice) + "&countpage=100";
         logger.info(format(PERFORMING_REQUEST, requestUrl));
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
